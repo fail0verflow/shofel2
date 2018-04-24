@@ -77,3 +77,13 @@ filesystem on your SD card.
 [Arch Linux ARM](http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz)
 provides ready-made rootfs tarballs
 that you should totally use. Userspace libraries and other patches coming soon.
+
+**You will most likely need a 1.8V serial cable connected to the right hand side
+Joy-Con port to do anything useful with this at this point**. Please do not bug
+us with questions about how to get this to run if you do not have a means to
+debug things yourself. This is not ready for end users. If you really want to
+try configuring your Linux image standalone to boot with WiFi or X support
+to get something done without a serial console, you're on your own and you get
+to suffer through the pain all by yourself. Hint: WiFi is broken on the first
+boot, you need to reboot on the first Linux launch (which puts you back into
+RCM mode), and then run the exploit again. Patches welcome.
