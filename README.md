@@ -59,23 +59,43 @@ Build Linux:
     $ export CROSS_COMPILE=aarch64-linux-gnu-
     $ make nintendo-switch_defconfig
     $ make
+If you get an error that looks like:
+```
+make[1]: *** No rule to make target '/lib/firmware/brcm/brcmfmac4356-pcie.txt', needed by 'firmware/brcm/brcmfmac4356-pcie.txt.gen.o'.  Stop.
+```
+download [this](https://chromium.googlesource.com/chromiumos/third_party/linux-firmware/+/f151f016b4fe656399f199e28cabf8d658bcb52b/brcm/brcmfmac4356-pcie.txt?format=TEXT) and put it on your host filesystem as:  `/lib/firmware/brcm/brcmfmac4356-pcie.txt`
 
 Run the exploit
 
     $ cd shofel2/exploit
-    $ ./shofel2.py cbfs.bin ../../coreboot/build/coreboot.rom
+    $ ./shofel2.py cbfs.bin ../../coreboot/build/coreboot.rom # This command needs root or permissions to access usb devices.
 
 Build the u-boot script and run it
 
     $ cd shofel2/usb_loader
     $ ../../u-boot/tools/mkimage -A arm64 -T script -C none -n "boot.scr" -d switch.scr switch.scr.img
-    $ ../../imx_usb_loader/imx_usb -c .
+    $ ../../imx_usb_loader/imx_usb -c . # This command needs root or permissions to access usb devices.
 
+## Root filesystems
 If all went well, you should have some penguins. You should probably put a root
-filesystem on your SD card.
-[Arch Linux ARM](http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz)
-provides ready-made rootfs tarballs
-that you should totally use. Userspace libraries and other patches coming soon.
+filesystem on your SD card. Userspace libraries and other patches coming soon.
+
+Here is an example on how to get Arch up and running.
+* make a new MBR partition table on a fresh sdcard
+* make two partitions on it
+* format the second one as ext4
+* mount that partition somewhere
+* download [Arch Linux ARM rootfs](http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz)
+* untar it into your partition as root.
+
+Here are some example commands you should not just copy paste into your terminal.
+```bash
+$ mkdir -p /tmp/sdcard
+$ mount -t ext4 /dev/mmcblk0p2 /tmp/sdcard
+$ wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
+$ sudo tar -xf ArchLinuxARM-aarch64-latest.tar.gz -C /tmp/sdcard
+$ sudo umount /dev/mmcblk0p2
+```
 
 **You will most likely need a 1.8V serial cable connected to the right hand side
 Joy-Con port to do anything useful with this at this point**. Please do not bug
