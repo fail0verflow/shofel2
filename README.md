@@ -2,6 +2,8 @@
 
 A misleadingly-named Tegra X1 Boot ROM exploit and Nintendo Switch Linux loader.
 
+See the accompanying blog post: https://fail0verflow.com/blog/2018/shofel2/
+
 ## Obligatory disclaimer
 
 If your Switch catches fire or turns into an Ouya, it's not our fault. It's
