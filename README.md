@@ -17,6 +17,8 @@ On the other hand, this exploit probably works on the Ouya...
 ## Usage
 
 You need arm-linux-gnueabi and aarch64-linux-gnu toolchains.
+[Linaro](https://releases.linaro.org/components/toolchain/binaries/latest-7/)
+have working toolchains.
 
 Clone everything:
 
@@ -71,5 +73,7 @@ Build the u-boot script and run it
     $ ../../imx_usb_loader/imx_usb -c .
 
 If all went well, you should have some penguins. You should probably put a root
-filesystem on your SD card. Arch Linux ARM provides ready-made rootfs tarballs
+filesystem on your SD card.
+[Arch Linux ARM](http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz)
+provides ready-made rootfs tarballs
 that you should totally use. Userspace libraries and other patches coming soon.
