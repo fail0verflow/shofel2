@@ -1,0 +1,1 @@
+ATTRS{name}=="stmfts", ENV{LIBINPUT_CALIBRATION_MATRIX}="0 1 0 -1 0 1"
