@@ -63,7 +63,14 @@ If you get an error that looks like:
 ```
 make[1]: *** No rule to make target '/lib/firmware/brcm/brcmfmac4356-pcie.txt', needed by 'firmware/brcm/brcmfmac4356-pcie.txt.gen.o'.  Stop.
 ```
-download [this](https://chromium.googlesource.com/chromiumos/third_party/linux-firmware/+/f151f016b4fe656399f199e28cabf8d658bcb52b/brcm/brcmfmac4356-pcie.txt?format=TEXT) and put it on your host filesystem as:  `/lib/firmware/brcm/brcmfmac4356-pcie.txt`
+download [this](https://chromium.googlesource.com/chromiumos/third_party/linux-firmware/+/f151f016b4fe656399f199e28cabf8d658bcb52b/brcm/brcmfmac4356-pcie.txt?format=TEXT), base64 decode it and put it on your host filesystem as `/lib/firmware/brcm/brcmfmac4356-pcie.txt`:
+
+```
+$ base64 -d brcmfmac4356-pcie.txt > brcmfmac4356-pcie-decoded.txt
+$ cp brcmfmac4356-pcie-decoded.txt /lib/firmware/brcm/brcmfmac4356-pcie.txt # This command needs root.
+```
+
+
 
 Run the exploit
 
