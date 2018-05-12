@@ -16,7 +16,9 @@ import os
 import hashlib
 import ctypes
 import fcntl
+import platform
 
+IS_OSX = platform.system() == "Darwin"
 USBDEVFS_URB_TYPE_CONTROL = 2
 USBDEVFS_SUBMITURB = 0x8038550a
 USBDEVFS_REAPURB = 0x4008550c
@@ -47,11 +49,13 @@ class RCM:
     fdt_addr = 0x8f000000
     ramdisk_addr = 0x90000000
     def __init__(s):
-        fds_before = get_fds()
+        if not IS_OSX:
+            fds_before = get_fds()
         s.dev = wait_for_device(s.DEV_ID_SWITCH)
-        fds = get_fds() - fds_before
-        s.fd = sorted(list(fds))[-1]
-        print("File descriptor: %d" % s.fd)
+        if not IS_OSX:
+            fds = get_fds() - fds_before
+            s.fd = sorted(list(fds))[-1]
+            print("File descriptor: %d" % s.fd)
     def ep1_read(s, size): return s.dev.read(s.EP1_IN, size)
     def ep1_write(s, data): return s.dev.write(s.EP1_OUT, data)
     def read_init_msg(s):
@@ -64,6 +68,12 @@ class RCM:
         return s.dev.ctrl_transfer(0x82, 0, 0, 0, size)
     def ep0_read_unbounded(s, size):
         print("Size: 0x%x\n" % size)
+        if IS_OSX:
+            try:
+                s.dev.ctrl_transfer(0x82, 0, 0, 0, size)
+            except usb.core.USBError:
+                print("timeout.. good!")
+                return
         buf = ctypes.create_string_buffer(struct.pack("@BBHHH%dx" % size, 0x82, 0, 0, 0, size))
         print(binascii.hexlify(buf[:8]))
         urb = ctypes.create_string_buffer(struct.pack("@BBiIPiiiiiIP1024x",
